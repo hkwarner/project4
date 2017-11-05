@@ -11,6 +11,9 @@ class Binary_Search_Tree:
     def __init__(self, value):
       self.value = value
       # TODO complete Node initialization
+      self.left = None
+      self.right = None
+      self.height = 0
 
   def __init__(self):
     self.__root = None
@@ -23,7 +26,12 @@ class Binary_Search_Tree:
     # the tree, raise a ValueError. Your solution must be recursive.
     # This will involve the introduction of additional private
     # methods to support the recursion control variable.
-    pass # TODO replace pass with your implementation
+    # TODO replace pass with your implementation
+    self.__root = self.__rec_insert(value)
+    pass
+
+  def __rec_insert(self,value, self.__root):
+      pass
 
   def remove_element(self, value):
     # Remove the value specified from the tree, raising a ValueError
@@ -35,7 +43,12 @@ class Binary_Search_Tree:
     # implementations). Your solution must be recursive.
     # This will involve the introduction of additional private
     # methods to support the recursion control variable.
-    pass # TODO replace pass with your implementation
+    # TODO replace pass with your implementation
+    self.__root = self.__rec_remove(value)
+    pass
+
+  def __rec_remove(self,value, self.__root):
+      pass
 
   def in_order(self):
     # Construct and return a string representing the in-order
