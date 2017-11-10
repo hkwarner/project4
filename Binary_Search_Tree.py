@@ -1,25 +1,40 @@
+import random
+
 class Binary_Search_Tree:
   # TODO.I have provided the public method skeletons. You will need
   # to add private methods to support the recursive algorithms
   # discussed in class
 
-  class __BST_Node:
+    class __BST_Node:
     # TODO The Node class is private. You may add any attributes and
     # methods you need. Recall that attributes in an inner class
     # must be public to be reachable from the the methods.
 
-    def __init__(self, value):
-      self.value = value
-      # TODO complete Node initialization
-      self.left = None
-      self.right = None
-      self.height = 0
+        def __init__(self, value):
+            self.value = value
+            # TODO complete Node initialization
+            self.left = None
+            self.right = None
+            self.height = 0
 
-  def __init__(self):
-    self.__root = None
-    # TODO complete initialization
+    def __init__(self):
+        # self.__root = None
+        self.__root = None
+        # TODO complete initialization
 
-  def insert_element(self, value):
+    def rec_insert(self, value, cur_node): # should be correct
+        if cur_node == None:
+            return self.__BST_Node(value)
+        elif cur_node != None:
+            if value < cur_node.value:
+                cur_node.left = self.rec_insert(value, cur_node.left)
+            elif value > cur_node.value:
+                cur_node.right = self.rec_insert(value, cur_node.right)
+            elif value == cur_node.value:
+                raise ValueError
+            return cur_node
+
+    def insert_element(self, value):
     # Insert the value specified into the tree at the correct
     # location based on "less is left; greater is right" binary
     # search tree ordering. If the value is already contained in
@@ -27,13 +42,9 @@ class Binary_Search_Tree:
     # This will involve the introduction of additional private
     # methods to support the recursion control variable.
     # TODO replace pass with your implementation
-    self.__root = self.__rec_insert(value)
-    pass
+        self.__root = self.rec_insert(value, self.__root)
 
-  def __rec_insert(self,value, self.__root):
-      pass
-
-  def remove_element(self, value):
+    def remove_element(self, value):
     # Remove the value specified from the tree, raising a ValueError
     # if the value isn't found. When a replacement value is necessary,
     # select the minimum value to the from the right as this element's
@@ -44,13 +55,30 @@ class Binary_Search_Tree:
     # This will involve the introduction of additional private
     # methods to support the recursion control variable.
     # TODO replace pass with your implementation
-    self.__root = self.__rec_remove(value)
-    pass
+        self.__root = self.__rec_remove(value, self.__root)
 
-  def __rec_remove(self,value, self.__root):
-      pass
+    def __rec_remove(self, value, cur_node):
+        #if cur_node == None:
+        #    raise ValueError
+        if value < cur_node.value:
+            cur_node.left = self.__rec_remove(value, cur_node.left)
+        elif value > cur_node.value:
+            cur_node.right = self.__rec_remove(value, cur_node.right)
+        elif value == cur_node.value: # value found
+            if cur_node.left == None and cur_node.right == None:
+                cur_node.value == None
+                return cur_node
+            elif cur_node.right == None:
+                return cur_node.left
+            else:                   # right ≠ None
+                right_min = cur_node.right
+                while right_min.left != None:
+                    right_min = right_min.left
+                cur_node.value = right_min.value
+                cur_node.right = \
+                self.__rec_remove(right_min.value, cur_node.right)
 
-  def in_order(self):
+    def in_order(self):
     # Construct and return a string representing the in-order
     # traversal of the tree. Empty trees should be printed as [ ].
     # Trees with one value should be printed as [ 4 ]. Trees with more
@@ -58,9 +86,28 @@ class Binary_Search_Tree:
     # Your solution must be recursive. This will involve the introduction
     # of additional private methods to support the recursion control
     # variable.
-    pass # TODO replace pass with your implementation
+    # TODO replace pass with your implementation
+        string = self.__rec_in_order(self.__root)
+        string = string.split()
+        to_return = ''
+        for i in string:
+            to_return = to_return + i + ', '
+        to_return = to_return[0:len(to_return)-2]
+        return ('[ ' + to_return + ' ]')
 
-  def pre_order(self):
+    def __rec_in_order(self, cur_node):
+        to_return = ''
+        if cur_node == None:
+            return ''
+        elif cur_node != None:
+            tree = [self.__rec_in_order(cur_node.left), \
+            str(cur_node.value), \
+            self.__rec_in_order(cur_node.right)]
+            for i in tree:
+                to_return = to_return + str(i) +' '
+            return to_return
+
+    def pre_order(self):
     # Construct and return a string representing the pre-order
     # traversal of the tree. Empty trees should be printed as [ ].
     # Trees with one value should be printed in as [ 4 ]. Trees with
@@ -68,9 +115,27 @@ class Binary_Search_Tree:
     # Your solution must be recursive. This will involve the introduction
     # of additional private methods to support the recursion control
     # variable.
-    pass # TODO replace pass with your implementation
+        string = self.__rec_pre_order(self.__root)
+        string = string.split()
+        to_return = ''
+        for i in string:
+            to_return = to_return + i + ', '
+        to_return = to_return[0:len(to_return)-2]
+        return ('[ ' + to_return + ' ]')
 
-  def post_order(self):
+    def __rec_pre_order(self, cur_node):
+        to_return = ''
+        if cur_node == None:
+            return ''
+        elif cur_node != None:
+            tree = [str(cur_node.value), \
+            self.__rec_pre_order(cur_node.left), \
+            self.__rec_pre_order(cur_node.right)]
+            for i in tree:
+                to_return = to_return + str(i) +' '
+            return to_return
+
+    def post_order(self):
     # Construct and return a string representing the post-order
     # traversal of the tree. Empty trees should be printed as [ ].
     # Trees with one value should be printed in as [ 4 ]. Trees with
@@ -78,23 +143,47 @@ class Binary_Search_Tree:
     # Your solution must be recursive. This will involve the introduction
     # of additional private methods to support the recursion control
     # variable.
-    pass # TODO replace pass with your implementation
+        string = self.__rec_post_order(self.__root)
+        string = string.split()
+        to_return = ''
+        for i in string:
+            to_return = to_return + i + ', '
+        to_return = to_return[0:len(to_return)-2]
+        return ('[ ' + to_return + ' ]')
 
-  def breadth_first(self):
+    def __rec_post_order(self, cur_node):
+        to_return = ''
+        if cur_node == None:
+            return ''
+        elif cur_node != None:
+            tree = [self.__rec_post_order(cur_node.left), \
+            self.__rec_post_order(cur_node.right), \
+            str(cur_node.value)]
+            for i in tree:
+                to_return = to_return + str(i) +' '
+            return to_return
+
+    def breadth_first(self):
     # Construct and return a string representing the breadth-first
     # traversal of the tree. Empty trees should be printed as [ ].
     # Trees with one value should be printed in as [ 4 ]. Trees with
     # more than one value should be printed as [ 4, 7 ]. Note the spacing.
-    pass # TODO replace pass with your implementation
+        pass # TODO replace pass with your implementation
 
-  def get_height(self):
+    def get_height(self):
     # return an integer that represents the height of the tree.
     # assume that an empty tree has height 0 and a tree with one
     # node has height 1. This method must operate in constant time.
-    pass # TODO replace pass with your implementation
+        pass # TODO replace pass with your implementation
 
-  def __str__(self):
-    return self.in_order()
+    def __str__(self):
+        return self.in_order()
 
 if __name__ == '__main__':
-  pass #unit tests make the main section unnecessary.
+  bst = Binary_Search_Tree()
+  for i in range (2):
+      bst.insert_element(2-i)
+      bst.insert_element(3+i)
+  print (bst)
+  bst.remove_element(1)
+  print (bst)
