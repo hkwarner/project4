@@ -1,26 +1,17 @@
 import random
 
 class Binary_Search_Tree:
-  # TODO.I have provided the public method skeletons. You will need
-  # to add private methods to support the recursive algorithms
-  # discussed in class
 
     class __BST_Node:
-    # TODO The Node class is private. You may add any attributes and
-    # methods you need. Recall that attributes in an inner class
-    # must be public to be reachable from the the methods.
 
         def __init__(self, value):
             self.value = value
-            # TODO complete Node initialization
             self.left = None
             self.right = None
             self.height = 0
 
     def __init__(self):
-        # self.__root = None
         self.__root = None
-        # TODO complete initialization
 
     def rec_insert(self, value, cur_node): # should be correct
         if cur_node == None:
@@ -35,58 +26,36 @@ class Binary_Search_Tree:
             return cur_node
 
     def insert_element(self, value):
-    # Insert the value specified into the tree at the correct
-    # location based on "less is left; greater is right" binary
-    # search tree ordering. If the value is already contained in
-    # the tree, raise a ValueError. Your solution must be recursive.
-    # This will involve the introduction of additional private
-    # methods to support the recursion control variable.
-    # TODO replace pass with your implementation
         self.__root = self.rec_insert(value, self.__root)
 
     def remove_element(self, value):
-    # Remove the value specified from the tree, raising a ValueError
-    # if the value isn't found. When a replacement value is necessary,
-    # select the minimum value to the from the right as this element's
-    # replacement. Take note of when to move a node reference and when
-    # to replace the value in a node instead. It is not necessary to
-    # return the value (though it would reasonable to do so in some
-    # implementations). Your solution must be recursive.
-    # This will involve the introduction of additional private
-    # methods to support the recursion control variable.
-    # TODO replace pass with your implementation
+        if self.__root == None: print('root is None before removal')
         self.__root = self.__rec_remove(value, self.__root)
+        if self.__root == None: print('root is None') #self.__root is being returned as none-->not assigned
 
     def __rec_remove(self, value, cur_node):
-        #if cur_node == None:
-        #    raise ValueError
+        if cur_node == None:
+            raise ValueError
         if value < cur_node.value:
             cur_node.left = self.__rec_remove(value, cur_node.left)
         elif value > cur_node.value:
             cur_node.right = self.__rec_remove(value, cur_node.right)
         elif value == cur_node.value: # value found
-            if cur_node.left == None and cur_node.right == None:
-                cur_node.value == None
-                return cur_node
+            if cur_node.left != None and cur_node.right != None:
+                prec = cur_node
+                replace_with = cur.right
+                while replace_with.left != None:
+                    prec = replace_with
+                    replace_with = replace_with.left
+                current.val = replace_with.val #this should probably return something
+                prec.left = None
             elif cur_node.right == None:
-                return cur_node.left
-            else:                   # right ≠ None
-                right_min = cur_node.right
-                while right_min.left != None:
-                    right_min = right_min.left
-                cur_node.value = right_min.value
-                cur_node.right = \
-                self.__rec_remove(right_min.value, cur_node.right)
+                cur_node = cur_node.left
+            elif cur_node.left == None:
+                cur_node = cur_node.right
+        return cur_node
 
     def in_order(self):
-    # Construct and return a string representing the in-order
-    # traversal of the tree. Empty trees should be printed as [ ].
-    # Trees with one value should be printed as [ 4 ]. Trees with more
-    # than one value should be printed as [ 4, 7 ]. Note the spacing.
-    # Your solution must be recursive. This will involve the introduction
-    # of additional private methods to support the recursion control
-    # variable.
-    # TODO replace pass with your implementation
         string = self.__rec_in_order(self.__root)
         string = string.split()
         to_return = ''
@@ -108,13 +77,6 @@ class Binary_Search_Tree:
             return to_return
 
     def pre_order(self):
-    # Construct and return a string representing the pre-order
-    # traversal of the tree. Empty trees should be printed as [ ].
-    # Trees with one value should be printed in as [ 4 ]. Trees with
-    # more than one value should be printed as [ 4, 7 ]. Note the spacing.
-    # Your solution must be recursive. This will involve the introduction
-    # of additional private methods to support the recursion control
-    # variable.
         string = self.__rec_pre_order(self.__root)
         string = string.split()
         to_return = ''
@@ -136,13 +98,6 @@ class Binary_Search_Tree:
             return to_return
 
     def post_order(self):
-    # Construct and return a string representing the post-order
-    # traversal of the tree. Empty trees should be printed as [ ].
-    # Trees with one value should be printed in as [ 4 ]. Trees with
-    # more than one value should be printed as [ 4, 7 ]. Note the spacing.
-    # Your solution must be recursive. This will involve the introduction
-    # of additional private methods to support the recursion control
-    # variable.
         string = self.__rec_post_order(self.__root)
         string = string.split()
         to_return = ''
@@ -185,5 +140,7 @@ if __name__ == '__main__':
       bst.insert_element(2-i)
       bst.insert_element(3+i)
   print (bst)
+  bst.remove_element(4)
+  print(bst)
   bst.remove_element(1)
   print (bst)
