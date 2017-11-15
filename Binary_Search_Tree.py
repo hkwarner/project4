@@ -143,11 +143,8 @@ class Binary_Search_Tree:
         to_return = to_return[0:len(to_return)-2]
         return ('[ ' + to_return + ' ]')
 
-    def __rec_breadth_first(self, cur_node, height):
-        if cur_node == None:
-            return ''
-        else:
-            
+        #this should be a queue--when dequeue enqueue children
+
 
     def get_height(self):
         return self.__height
