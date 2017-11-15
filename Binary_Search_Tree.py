@@ -135,7 +135,6 @@ class Binary_Search_Tree:
             return to_return
 
     def breadth_first(self):
-        string = self.__rec_breadth_first(self.__root, self.__height)
         string = string.split()
         to_return = ''
         for i in string:
