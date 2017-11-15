@@ -16,6 +16,8 @@ class Binary_Search_Tree:
 
     def rec_insert(self, value, cur_node): # should be correct
         if cur_node == None:
+            if cur_node is self.__root:
+              self.__height = 1
             return self.__BST_Node(value)
         elif cur_node != None:
             if value < cur_node.value:
@@ -26,7 +28,7 @@ class Binary_Search_Tree:
                 cur_node.height = cur_node.right.height + 1
             elif value == cur_node.value:
                 raise ValueError
-            if self.__height < self.__cur_node.height:
+            if self.__height < cur_node.height:
                 self.__height = cur_node.height
             return cur_node
 
@@ -41,8 +43,10 @@ class Binary_Search_Tree:
             raise ValueError
         if value < cur_node.value:
             cur_node.left = self.__rec_remove(value, cur_node.left)
+            #cur_node.__height -= 1
         elif value > cur_node.value:
             cur_node.right = self.__rec_remove(value, cur_node.right)
+            #cur_node.__height -= 1
         elif value == cur_node.value:
             if cur_node.left != None and cur_node.right != None:
                 prec = cur_node
@@ -52,11 +56,20 @@ class Binary_Search_Tree:
                     replace_with = replace_with.left
                 current.val = replace_with.val
                 prec.left = None
+                if prec.right == None:
+                    prec.height -= 1
             elif cur_node.right == None:
                 cur_node = cur_node.left
+                if cur_node != None:
+                    cur_node.height -= 1
             elif cur_node.left == None:
                 cur_node = cur_node.right
+                if cur_node != None:
+                    cur_node.height -= 1
+#if preceding value has two children, don't update height
+#if preceding value has one or zero children, update self.__height if .height == self.__height - 1
         return cur_node
+
 
     def in_order(self):
         string = self.__rec_in_order(self.__root)
@@ -122,11 +135,19 @@ class Binary_Search_Tree:
             return to_return
 
     def breadth_first(self):
-    # Construct and return a string representing the breadth-first
-    # traversal of the tree. Empty trees should be printed as [ ].
-    # Trees with one value should be printed in as [ 4 ]. Trees with
-    # more than one value should be printed as [ 4, 7 ]. Note the spacing.
-        pass # TODO replace pass with your implementation
+        string = self.__rec_breadth_first(self.__root, self.__height)
+        string = string.split()
+        to_return = ''
+        for i in string:
+            to_return = to_return + i + ', '
+        to_return = to_return[0:len(to_return)-2]
+        return ('[ ' + to_return + ' ]')
+
+    def __rec_breadth_first(self, cur_node, height):
+        if cur_node == None:
+            return ''
+        else:
+            
 
     def get_height(self):
         return self.__height
@@ -136,11 +157,17 @@ class Binary_Search_Tree:
 
 if __name__ == '__main__':
   bst = Binary_Search_Tree()
+  print(bst.get_height())
+  bst.insert_element(10)
+  print(bst.get_height())
   for i in range (2):
       bst.insert_element(2-i)
       bst.insert_element(3+i)
-  print (bst)
+  print(bst.get_height())
+  print(bst)
   bst.remove_element(4)
+  print(bst.get_height())
   print(bst)
   bst.remove_element(1)
+  print(bst.get_height())
   print (bst)
