@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import queue
+=======
+import random
+from Queue import Queue  #can we do this or do we need to write a new Queue?
+>>>>>>> 065d378f2e3bad2e8c498865f4f56221f9566d58
 
 class Binary_Search_Tree:
 
@@ -14,6 +19,27 @@ class Binary_Search_Tree:
         self.__root = None
         self.__height = 0
 
+<<<<<<< HEAD
+=======
+    def rec_insert(self, value, cur_node): # should be correct
+        if cur_node == None:
+            if cur_node is self.__root:
+              self.__height = 1
+            return self.__BST_Node(value)
+        elif cur_node != None:
+            if value < cur_node.value:
+                cur_node.left = self.rec_insert(value, cur_node.left)
+                cur_node.height = cur_node.left.height + 1
+            elif value > cur_node.value:
+                cur_node.right = self.rec_insert(value, cur_node.right)
+                cur_node.height = cur_node.right.height + 1
+            elif value == cur_node.value:
+                raise ValueError
+            if self.__height < cur_node.height:
+                self.__height = cur_node.height
+            return cur_node
+
+>>>>>>> 065d378f2e3bad2e8c498865f4f56221f9566d58
     def insert_element(self, value):
         self.__root = self.rec_insert(value, self.__root)
 
@@ -38,6 +64,7 @@ class Binary_Search_Tree:
     def __rec_remove(self, val, t):
         if t == None:
             raise ValueError
+<<<<<<< HEAD
         elif val < t.value:
             t.left = self.__rec_remove(val, t.left)
         elif val > t.value:
@@ -54,6 +81,37 @@ class Binary_Search_Tree:
             else:
                 t = t.left
         return t
+=======
+        if value < cur_node.value:
+            cur_node.left = self.__rec_remove(value, cur_node.left)
+            #cur_node.__height -= 1
+        elif value > cur_node.value:
+            cur_node.right = self.__rec_remove(value, cur_node.right)
+            #cur_node.__height -= 1
+        elif value == cur_node.value:
+            if cur_node.left != None and cur_node.right != None:
+                prec = cur_node
+                replace_with = cur.right
+                while replace_with.left != None:
+                    prec = replace_with
+                    replace_with = replace_with.left
+                current.val = replace_with.val
+                prec.left = None
+                if prec.right == None:
+                    prec.height -= 1
+            elif cur_node.right == None:
+                cur_node = cur_node.left
+                if cur_node != None:
+                    cur_node.height -= 1
+            elif cur_node.left == None:
+                cur_node = cur_node.right
+                if cur_node != None:
+                    cur_node.height -= 1
+#if preceding value has two children, don't update height
+#if preceding value has one or zero children, update self.__height if .height == self.__height - 1
+        return cur_node
+>>>>>>> 065d378f2e3bad2e8c498865f4f56221f9566d58
+
 
     def in_order(self):
         if self.__root == None:
@@ -113,6 +171,7 @@ class Binary_Search_Tree:
             return tree
 
     def breadth_first(self):
+<<<<<<< HEAD
     # Construct and return a string representing the breadth-first
     # traversal of the tree. Empty trees should be printed as [ ].
     # Trees with one value should be printed in as [ 4 ]. Trees with
@@ -132,6 +191,27 @@ class Binary_Search_Tree:
                 string = string + ', ' + str(t.right.value)
         to_return = '[ ' + string + ' ]'
         return to_return
+=======
+        string = []
+        nodes = Queue()
+        nodes.enqueue(self.__root)
+        while(len(nodes)!=0):
+            for len(nodes):
+              returned = nodes.dequeue()
+              string += str(returned.value)
+              nodes.enqueue(returned.left)
+              nodes.enqueue(returned.right)
+        string = string.split()
+        to_return = ''
+        for i in string:
+            to_return = to_return + i + ', '
+        to_return = to_return[0:len(to_return)-2]
+        return ('[ ' + to_return + ' ]')
+
+        #this should be a queue--when dequeue enqueue children
+        #probably mostly right but haven't tested
+
+>>>>>>> 065d378f2e3bad2e8c498865f4f56221f9566d58
 
     def get_height(self):
         if self.__root == None:
@@ -144,13 +224,27 @@ class Binary_Search_Tree:
 
 if __name__ == '__main__':
   bst = Binary_Search_Tree()
+<<<<<<< HEAD
   for i in range (5):
+=======
+  print(bst.get_height())
+  bst.insert_element(10)
+  print(bst.get_height())
+  for i in range (2):
+>>>>>>> 065d378f2e3bad2e8c498865f4f56221f9566d58
       bst.insert_element(2-i)
       bst.insert_element(3+i)
-  print (bst)
+  print(bst.get_height())
+  print(bst)
   bst.remove_element(4)
+<<<<<<< HEAD
   print (bst)
+=======
+  print(bst.get_height())
+  print(bst)
+>>>>>>> 065d378f2e3bad2e8c498865f4f56221f9566d58
   bst.remove_element(1)
+  print(bst.get_height())
   print (bst)
   print ('pre_order', bst.pre_order())
   print ('post order', bst.post_order())
