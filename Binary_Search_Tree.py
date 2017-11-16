@@ -19,7 +19,8 @@ class Binary_Search_Tree:
 
     def rec_insert(self, val, t):
         if t == None:
-            return self.__BST_Node(val)
+            t = self.__BST_Node(val)
+            t.height = 1
         elif t != None:
             if val < t.value:
                 t.left = self.rec_insert(val, t.left)
@@ -29,9 +30,9 @@ class Binary_Search_Tree:
                 t.height = t.right.height + 1
             elif val == t.value:
                 raise ValueError
-            if t.height > self.__height:
-                self.__height = t.height + 1
-            return t
+        if t.height > self.__height:
+            self.__height = t.height
+        return t
 
     def remove_element(self, value):
         self.__root = self.__rec_remove(value, self.__root)
@@ -69,7 +70,8 @@ class Binary_Search_Tree:
                 t = t.right
             else:
                 t = t.left
-        self.__height = self.__root.height + 1
+        if t!= None:
+            self.__height = t.height
         return t
 
     def in_order(self):
@@ -130,10 +132,7 @@ class Binary_Search_Tree:
             return tree
 
     def breadth_first(self):
-    # Construct and return a string representing the breadth-first
-    # traversal of the tree. Empty trees should be printed as [ ].
-    # Trees with one value should be printed in as [ 4 ]. Trees with
-    # more than one value should be printed as [ 4, 7 ]. Note the spacing.
+    
         if self.__root == None:
             return '[ ]'
         q = queue.Queue()
@@ -161,15 +160,8 @@ class Binary_Search_Tree:
 
 if __name__ == '__main__':
   bst = Binary_Search_Tree()
-  bst.insert_element(3)
-  bst.insert_element(2)
-  bst.insert_element(5)
   bst.insert_element(1)
-  bst.insert_element(4)
-  bst.insert_element(6)
-  bst.insert_element(7)
-  print ('initial', bst.get_height())
-  bst.remove_element(7)
-  print ('new', bst.get_height())
-  #bst.remove_element(7)
-  #print ('new', bst.get_height())
+  bst.insert_element(2)
+  bst.remove_element(1)
+  print (bst)
+  print ('height', bst.get_height())
