@@ -1,4 +1,5 @@
 import random
+from Queue import Queue  #can we do this or do we need to write a new Queue?
 
 class Binary_Search_Tree:
 
@@ -135,6 +136,15 @@ class Binary_Search_Tree:
             return to_return
 
     def breadth_first(self):
+        string = []
+        nodes = Queue()
+        nodes.enqueue(self.__root)
+        while(len(nodes)!=0):
+            for len(nodes):
+              returned = nodes.dequeue()
+              string += str(returned.value)
+              nodes.enqueue(returned.left)
+              nodes.enqueue(returned.right)
         string = string.split()
         to_return = ''
         for i in string:
@@ -143,6 +153,7 @@ class Binary_Search_Tree:
         return ('[ ' + to_return + ' ]')
 
         #this should be a queue--when dequeue enqueue children
+        #probably mostly right but haven't tested
 
 
     def get_height(self):
