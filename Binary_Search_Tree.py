@@ -1,4 +1,4 @@
-import queue
+from Queue import Queue
 
 class Binary_Search_Tree:
 
@@ -17,19 +17,23 @@ class Binary_Search_Tree:
     def insert_element(self, value):
         self.__root = self.rec_insert(value, self.__root)
 
-    def rec_insert(self, val, t):
-        if t == None:
-            t = self.__BST_Node(val)
+    def rec_insert(self, value, t):
+        if t == None: # base
+            t = self.__BST_Node(value)
             t.height = 1
         elif t != None:
-            if val < t.value:
-                t.left = self.rec_insert(val, t.left)
-                t.height = t.left.height + 1
-            elif val > t.value:
-                t.right = self.rec_insert(val, t.right)
-                t.height = t.right.height + 1
-            elif val == t.value:
+            if value < t.value: # left
+                t.left = self.rec_insert(value, t.left)
+            elif value > t.value: # right
+                t.right = self.rec_insert(value, t.right)
+            elif value == t.value:
                 raise ValueError
+            # adjust tree height
+            if t.right == None:
+                t.height = t.left.height + 1
+            elif t.left == None:
+                t.height = t.right.height + 1
+        # update root height when necessary
         if t.height > self.__height:
             self.__height = t.height
         return t
@@ -37,40 +41,40 @@ class Binary_Search_Tree:
     def remove_element(self, value):
         self.__root = self.__rec_remove(value, self.__root)
 
-    def __rec_remove(self, val, t):
+    def __rec_remove(self, value, t):
         if t == None:
             raise ValueError
-        elif val < t.value:
-            t.left = self.__rec_remove(val, t.left)
-            if t.left != None and t.right != None:
-                t.height = max(t.left.height, t.right.height) + 1
-            elif t.left == None:
-                if t.right != None:
-                    t.height = t.right.height + 1
+        elif t != None:
+            if value == t.value: # value found
+                if t.left != None and t.right != None: # two children
+                    r = t.right
+                    while r.left != None: # find min on right
+                        r = r.left
+                    t.value = r.value
+                    t.right = self.__rec_remove(r.value, t.right)
+                elif t.left == None: # one or no child
+                    t = t.right
+                else:
+                    t = t.left
+            elif value < t.value: # left
+                t.left = self.__rec_remove(value, t.left)
+            elif value > t.value: # right
+                t.right = self.__rec_remove(value, t.right)
+            # adjust tree height
+            if t != None:
+                if t.left == None and t.right == None:
+                    t.height = 1
+                elif t.left != None and t.right != None:
+                    if t.left.height > t.right.height:
+                        t.height = t.left.height + 1
+                    else:
+                        t.height = t.right.height + 1
                 elif t.right == None:
-                    t.height -= 1
-        elif val > t.value:
-            t.right = self.__rec_remove(val, t.right)
-            if t.right != None and t.left != None:
-                t.height = max(t.left.height, t.right.height) + 1
-            elif t.right == None:
-                if t.left != None:
                     t.height = t.left.height + 1
-                elif t.left == None:
-                    t.height -= 1
-        elif val == t.value:
-            if t.left != None and t.right != None:
-                r = t.right
-                while r.left != None:
-                    r = r.left
-                t.value = r.value
-                t.right = self.__rec_remove(r.value, t.right)
-                t.height = max(t.left.height, t.right.height)
-            elif t.left == None:
-                t = t.right
-            else:
-                t = t.left
-        if t!= None:
+                else:
+                    t.height = t.right.height + 1
+        # update root height if necessary
+        if t != None and self.__height - t.height == 1:
             self.__height = t.height
         return t
 
@@ -132,19 +136,18 @@ class Binary_Search_Tree:
             return tree
 
     def breadth_first(self):
-    
         if self.__root == None:
-            return '[ ]'
-        q = queue.Queue()
+            return '[ ]' # empty case
+        q = Queue()
         string = str(self.__root.value)
-        q.put(self.__root)
-        while q.empty() is False:
-            t = q.get()
+        q.enqueue(self.__root)
+        while len(q) > 0 :
+            t = q.dequeue()
             if t.left != None:
-                q.put(t.left)
+                q.enqueue(t.left)
                 string = string + ', ' + str(t.left.value)
             if t.right != None:
-                q.put(t.right)
+                q.enqueue(t.right)
                 string = string + ', ' + str(t.right.value)
         to_return = '[ ' + string + ' ]'
         return to_return
@@ -160,8 +163,9 @@ class Binary_Search_Tree:
 
 if __name__ == '__main__':
   bst = Binary_Search_Tree()
-  bst.insert_element(1)
+  bst.insert_element(3)
   bst.insert_element(2)
-  bst.remove_element(1)
+  print (bst)
+  bst.remove_element(3)
   print (bst)
   print ('height', bst.get_height())
