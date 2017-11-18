@@ -33,6 +33,10 @@ class Binary_Search_Tree:
                 t.height = t.left.height + 1
             elif t.left == None:
                 t.height = t.right.height + 1
+            elif t.left.height > t.right.height:
+                t.height = t.left.height + 1
+            else:
+                t.height = t.right.height + 1 
         # update root height when necessary
         if t.height > self.__height:
             self.__height = t.height
@@ -161,11 +165,11 @@ class Binary_Search_Tree:
     def __str__(self):
         return self.in_order()
 
-if __name__ == '__main__':
-  bst = Binary_Search_Tree()
-  bst.insert_element(3)
-  bst.insert_element(2)
-  print (bst)
-  bst.remove_element(3)
-  print (bst)
-  print ('height', bst.get_height())
+# if __name__ == '__main__':
+#   bst = Binary_Search_Tree()
+#   bst.insert_element(3)
+#   bst.insert_element(2)
+#   print (bst)
+#   bst.remove_element(3)
+#   print (bst)
+#   print ('height', bst.get_height())
